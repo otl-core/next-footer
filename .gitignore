@@ -1,0 +1,10 @@
+node_modules
+dist
+*.log
+.DS_Store
+test-results/
+playwright-report/
+playwright/.cache/
+.lighthouseci/
+lighthouse-report.html
+*.lighthouse-report.html

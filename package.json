@@ -1,0 +1,95 @@
+{
+  "name": "@otl-core/next-footer",
+  "version": "1.1.2",
+  "type": "module",
+  "description": "Reusable footer components for OTL CMS",
+  "main": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "publishConfig": {
+    "main": "./dist/index.js",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "clean": "rm -rf dist",
+    "rebuild": "npm run clean && npm run build",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "typecheck": "tsc --noEmit",
+    "verify": "npm run lint && npm run typecheck && npm run test && npm run build"
+  },
+  "keywords": [
+    "footer",
+    "react",
+    "components",
+    "cms"
+  ],
+  "author": "OTL Core",
+  "license": "UNLICENSED",
+  "peerDependencies": {
+    "@otl-core/cms-types": "*",
+    "@radix-ui/react-focus-scope": "^1.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "marked": "^16.4.0",
+    "next": ">=14.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "react-markdown": "^10.1.0",
+    "react-transition-group": "^4.4.5",
+    "tailwind-merge": "^3.3.1"
+  },
+  "dependencies": {
+    "@otl-core/block-registry": "^1.1.2",
+    "@otl-core/cms-utils": "^1.1.2",
+    "@otl-core/style-utils": "^1.1.2"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@otl-core/cms-types": "^1.1.2",
+    "@otl-core/cms-utils": "^1.1.2",
+    "@radix-ui/react-focus-scope": "^1.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.0.0",
+    "@types/node": "^20.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/react-transition-group": "^4.4.12",
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "@vitest/ui": "^4.0.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "eslint": "^9.37.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^6.1.1",
+    "jsdom": "^25.0.0",
+    "marked": "^16.4.0",
+    "react-markdown": "^10.1.0",
+    "react-transition-group": "^4.4.5",
+    "tailwind-merge": "^3.3.1",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^4.0.0"
+  }
+}
