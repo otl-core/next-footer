@@ -4,7 +4,7 @@ import {
   FooterContentSection,
   FooterSection,
 } from "@otl-core/cms-types";
-import React, { useMemo } from "react";
+import React from "react";
 import { resolveColorToCSS } from "@otl-core/style-utils";
 import { isContentSection } from "../../lib/footer.utils";
 import { BlockRenderer as LocalBlockRenderer } from "../blocks/block-renderer";
@@ -28,7 +28,7 @@ export const FooterSectionComponent: React.FC<FooterSectionProps> = ({
   level = 0,
   blockRegistry,
 }) => {
-  const sectionStyle: React.CSSProperties = useMemo(() => {
+  const sectionStyle: React.CSSProperties = (() => {
     const style: React.CSSProperties = {
       display: "flex",
       flexDirection: section.type === "row" ? "row" : "column",
@@ -75,7 +75,7 @@ export const FooterSectionComponent: React.FC<FooterSectionProps> = ({
     }
 
     return style;
-  }, [section]);
+  })();
 
   // Content section - render blocks
   if (isContentSection(section)) {
