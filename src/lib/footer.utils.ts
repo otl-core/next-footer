@@ -36,7 +36,9 @@ function getResponsiveBase<T>(value: ResponsiveValue<T> | T): T {
 }
 
 /**
- * Resolve border config to CSS string
+ * Resolve border config to CSS property string(s).
+ * When width is a single value (e.g. "1px"), returns a `border` shorthand.
+ * When width has multiple values (e.g. "1px 0 0 0"), returns separate properties.
  */
 function resolveBorder(
   border: ResponsiveValue<BorderConfig> | undefined,
@@ -50,7 +52,12 @@ function resolveBorder(
   const style = base.style || "solid";
   const color = base.color ? resolveColorToCSS(base.color) : "transparent";
 
-  return `${width} ${style} ${color}`;
+  // Multi-value width (e.g. "1px 0 0 0") can't use border shorthand
+  if (width.trim().includes(" ")) {
+    return `border-width: ${width}; border-style: ${style}; border-color: ${color}`;
+  }
+
+  return `border: ${width} ${style} ${color}`;
 }
 
 /**
@@ -78,7 +85,7 @@ export function generateFooterCSS(
       ${resolvedColors.text ? `color: ${resolvedColors.text};` : ""}
       ${baseMargin ? `margin: ${baseMargin};` : ""}
       ${basePadding ? `padding: ${basePadding};` : ""}
-      ${borderCSS ? `border: ${borderCSS};` : ""}
+      ${borderCSS ? `${borderCSS};` : ""}
       ${footer.style.shadow ? `box-shadow: ${formatShadow(isResponsiveConfig(footer.style.shadow) ? footer.style.shadow.base : footer.style.shadow)};` : ""}
       ${baseSectionGap ? `gap: ${baseSectionGap};` : ""}
     }

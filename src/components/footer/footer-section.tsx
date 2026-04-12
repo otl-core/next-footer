@@ -18,6 +18,7 @@ interface FooterSectionProps {
   resolvedColors: Record<string, string | undefined>;
   level?: number;
   blockRegistry?: BlockRegistry;
+  parentMinWidth?: string;
 }
 
 export const FooterSectionComponent: React.FC<FooterSectionProps> = ({
@@ -27,6 +28,7 @@ export const FooterSectionComponent: React.FC<FooterSectionProps> = ({
   resolvedColors,
   level = 0,
   blockRegistry,
+  parentMinWidth,
 }) => {
   const sectionStyle: React.CSSProperties = (() => {
     const style: React.CSSProperties = {
@@ -39,6 +41,14 @@ export const FooterSectionComponent: React.FC<FooterSectionProps> = ({
 
     if (section.style.flex) {
       style.flex = section.style.flex;
+    }
+
+    if (section.style.wrap) {
+      style.flexWrap = "wrap";
+    }
+
+    if (parentMinWidth) {
+      style.minWidth = parentMinWidth;
     }
 
     // Apply section-specific background
@@ -65,9 +75,18 @@ export const FooterSectionComponent: React.FC<FooterSectionProps> = ({
           : section.style.border;
 
       if (border) {
-        style.border = `${border.width || "0"} ${border.style || "solid"} ${
-          border.color ? resolveColorToCSS(border.color) : "transparent"
-        }`;
+        const bw = border.width || "0";
+        const bs = border.style || "solid";
+        const bc = border.color
+          ? resolveColorToCSS(border.color)
+          : "transparent";
+        if (bw.trim().includes(" ")) {
+          style.borderWidth = bw;
+          style.borderStyle = bs;
+          style.borderColor = bc;
+        } else {
+          style.border = `${bw} ${bs} ${bc}`;
+        }
         if (border.radius) {
           style.borderRadius = border.radius;
         }
@@ -116,6 +135,7 @@ export const FooterSectionComponent: React.FC<FooterSectionProps> = ({
             footer={footer}
             site={site}
             resolvedColors={resolvedColors}
+            parentMinWidth={section.style.minWidth}
             level={level + 1}
             blockRegistry={blockRegistry}
           />
