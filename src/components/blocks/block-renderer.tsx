@@ -6,7 +6,7 @@
 
 import { BlockInstance } from "@otl-core/cms-types";
 import React from "react";
-import ReactMarkdown from "react-markdown";
+import { parseMarkdownToHTML } from "../../lib/navigation.utils";
 
 interface BlockRendererProps {
   block: BlockInstance;
@@ -19,9 +19,10 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ block }) => {
   if (type === "markdown") {
     const content = (config as { content?: string }).content || "";
     return (
-      <div className="footer-block footer-markdown">
-        <ReactMarkdown>{content}</ReactMarkdown>
-      </div>
+      <div
+        className="footer-block footer-markdown"
+        dangerouslySetInnerHTML={{ __html: parseMarkdownToHTML(content) }}
+      />
     );
   }
 

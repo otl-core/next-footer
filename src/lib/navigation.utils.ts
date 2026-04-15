@@ -324,9 +324,29 @@ export function getLocalizedString(
   return "";
 }
 
+/**
+ * Pre-processes emphasis markers into raw HTML tags before the CommonMark
+ * parser sees them, bypassing delimiter-run edge cases like
+ * `**krippner:**digital`.
+ */
+function preprocessEmphasis(text: string): string {
+  const codes: string[] = [];
+  let s = text.replace(/`[^`]+`/g, (m) => {
+    codes.push(m);
+    return `\x00C${codes.length - 1}\x00`;
+  });
+  s = s.replace(/\*\*\*(.+?)\*\*\*/g, "<strong><em>$1</em></strong>");
+  s = s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  s = s.replace(/(?<![\\*])\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, "<em>$1</em>");
+  s = s.replace(/\x00C(\d+)\x00/g, (_, i) => codes[parseInt(i)]);
+  return s;
+}
+
 export function parseMarkdownToHTML(markdown: string): string {
-  // Parse markdown to HTML
-  const html = marked.parse(markdown, { async: false }) as string;
+  // Pre-process emphasis, then parse markdown to HTML
+  const html = marked.parse(preprocessEmphasis(markdown), {
+    async: false,
+  }) as string;
 
   // Transform h1-h6 elements to divs with corresponding classes
   return html
